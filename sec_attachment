@@ -1,0 +1,10 @@
+resource "null_resource" "ec2_securitygroup_attachment" {
+  count                         = "${length(var.ec2_instance_ids_sg)}"
+  triggers {
+    random_id                   = "${uuid()}"
+    security_group_update       = "${module.ec2_security_group.security_group_id}"
+  }
+  provisioner "local-exec" {
+    command = "aws --region ${var.resource_region} ec2 modify-instance-attribute --instance-id ${element(var.ec2_instance_ids_sg, count.index)} --groups ${local.ec2_network_interfaces} "
+  }
+}
