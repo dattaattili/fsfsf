@@ -8,3 +8,6 @@ resource "null_resource" "ec2_securitygroup_attachment" {
     command = "aws --region ${var.resource_region} ec2 modify-instance-attribute --instance-id ${element(var.ec2_instance_ids_sg, count.index)} --groups ${local.ec2_network_interfaces} "
   }
 }
+
+
+ec2_network_interfaces              = "${aws_security_group.sec_name.security_group_id}"
